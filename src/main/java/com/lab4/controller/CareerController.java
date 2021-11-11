@@ -13,4 +13,10 @@ public class CareerController implements com.lab4.controller.interfaces.CareerCo
     public GeneralDao<Career, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(careerDao,() -> careerDao = new CareerDao());
     }
+
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s |","id","name","position_id");
+    }
+
 }

@@ -20,11 +20,13 @@ public interface GeneralController<T, ID>{
         return generalDoa().create(model);
     }
 
-    default int update(T model) throws SQLException {
-        return generalDoa().update(model);
+    default void update(T model) throws SQLException {
+        generalDoa().update(model);
     }
 
     default int delete(ID id) throws SQLException {
         return generalDoa().delete(id);
     }
+
+    String printColumns();
 }

@@ -15,4 +15,8 @@ public class SensorsController implements com.lab4.controller.interfaces.Sensors
     public GeneralDao<Sensors, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(sensorsDao,() -> sensorsDao = new SensorsDao());
     }
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s |","id","transport_id", "date_time");
+    }
 }

@@ -4,8 +4,10 @@ import com.lab4.controller.*;
 import com.lab4.controller.interfaces.GeneralController;
 import com.lab4.model.models.*;
 import com.lab4.model.models.GeneralModel;
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+
+import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class View implements Printable{
         controllers.put("Position",new PositionController());
         controllers.put("Sensors",new SensorsController());
         controllers.put("Transport",new TransportController());
+        controllers.put("TransportSensor",new TransportSesnsorsController());
         controllers.put("Worker",new WorkerController());
         controllers.put("WorkerInfo",new WorkerInfoController());
         controllers.put("WorkerSensors",new WorkerSensorsController());
@@ -40,6 +43,7 @@ public class View implements Printable{
         models.put("Position",new Position());
         models.put("Sensors",new Sensors());
         models.put("Transport",new Transport());
+        models.put("TransportSensor",new TransportSensors());
         models.put("Worker",new Worker());
         models.put("WorkerInfo",new WorkerInfo());
         models.put("WorkerSensors",new WorkerSensors());
@@ -59,6 +63,7 @@ public class View implements Printable{
                     case "P" -> printMethodModel("Position");
                     case "S" -> printMethodModel("Sensors");
                     case "T" -> printMethodModel("Transport");
+                    case "TS" -> printMethodModel("TransportSensor");
                     case "W" -> printMethodModel("Worker");
                     case "WI" -> printMethodModel("WorkerInfo");
                     case "WS" -> printMethodModel("WorkerSensors");
@@ -66,7 +71,8 @@ public class View implements Printable{
                     default -> System.out.println("invalid input");
                 }
             } catch (Exception e) {
-                System.out.println("invalid input");
+
+                System.out.println(e);
             }
         }
     }
@@ -163,8 +169,45 @@ public class View implements Printable{
                     case "java.lang.Float":
                         field.set(model, Float.parseFloat(consoleInput));
                         break;
+                    case "java.lang.Double":
+                        field.set(model, Double.parseDouble(consoleInput));
+                        break;
+                    case "com.lab4.model.models.Career":
+                        field.set(model, controllers.get("Career").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.MedicalInsurance":
+                        field.set(model, controllers.get("MedicalInsurance").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.MedicStatus":
+                        field.set(model, controllers.get("MedicStatus").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.Position":
+                        field.set(model, controllers.get("Position").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.Sensors":
+                        field.set(model, controllers.get("Sensors").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.Transport":
+                        field.set(model, controllers.get("Transport").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.TransportSensor":
+                        field.set(model, controllers.get("TransportSensor").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.Worker":
+                        field.set(model, controllers.get("Worker").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.WorkerInfo":
+                        field.set(model, controllers.get("WorkerInfo").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "com.lab4.model.models.WorkerSensors":
+                        field.set(model, controllers.get("WorkerSensors").findById(Integer.parseInt(consoleInput)));
+                        break;
+                    case "java.sql.Date":
+                        field.set(model, Date.valueOf(consoleInput));
+                        break;
                     default:
                         break;
+
                 }
             }
             return model;

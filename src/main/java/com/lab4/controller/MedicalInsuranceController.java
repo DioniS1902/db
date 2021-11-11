@@ -13,4 +13,9 @@ public class MedicalInsuranceController implements com.lab4.controller.interface
     public GeneralDao<MedicalInsurance, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(medicalInsuranceDao,() -> medicalInsuranceDao = new MedicalInsuranceDao());
     }
+
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s |","id","medic_code");
+    }
 }

@@ -13,4 +13,9 @@ public class PositionController implements com.lab4.controller.interfaces.Positi
     public GeneralDao<Position, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(positionDao,() -> positionDao = new PositionDao());
     }
+
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s |","id","lat", "long");
+    }
 }

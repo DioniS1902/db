@@ -13,4 +13,8 @@ public class MedicStatusController implements com.lab4.controller.interfaces.Med
     public GeneralDao<MedicStatus, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(medicStatusDao,() -> medicStatusDao = new MedicStatusDao());
     }
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s | %-20s |","id","date", "temperature", "worker_id");
+    }
 }

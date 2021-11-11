@@ -14,4 +14,9 @@ public class WorkerSensorsController implements com.lab4.controller.interfaces.W
     public GeneralDao<WorkerSensors, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(workerSensorsDao,() -> workerSensorsDao = new WorkerSensorsDao());
     }
+
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s | %-20s |","id","temperature", "palpitation", "sensors_id");
+    }
 }

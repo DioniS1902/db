@@ -1,18 +1,50 @@
 package com.lab4.model.models;
 
-import com.lab4.model.models.annotation.Column;
-import com.lab4.model.models.annotation.PrimaryKey;
-import com.lab4.model.models.annotation.Table;
-import lombok.Data;
+import javax.persistence.*;
+import java.util.Objects;
 
-@Table(name = "medic_insurance")
-@Data
+@Entity
+@Table(name = "medical_insurance", schema = "career")
 public class MedicalInsurance extends GeneralModel{
-    @PrimaryKey
-    @Column(name = "id")
-    private Integer id;
+    private int medicId;
+    private String medicCode;
 
+    @Id
+    @Column(name = "medic_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getMedicId() {
+        return medicId;
+    }
+
+    public void setMedicId(int medicId) {
+        this.medicId = medicId;
+    }
+
+    @Basic
     @Column(name = "medic_code")
-    private Integer medicCode;
+    public String getMedicCode() {
+        return medicCode;
+    }
 
+    public void setMedicCode(String medicCode) {
+        this.medicCode = medicCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalInsurance that = (MedicalInsurance) o;
+        return medicId == that.medicId && Objects.equals(medicCode, that.medicCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(medicId, medicCode);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("|%3s| %-20s |",medicId,medicCode);
+    }
 }

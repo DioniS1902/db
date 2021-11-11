@@ -1,70 +1,64 @@
 package com.lab4.model.DAO.interfaces;
 
-import com.lab4.model.presistent.ConnectionManager;
+import org.hibernate.query.Query;
+import com.lab4.model.DAO.QueryGenerator;
+import com.lab4.model.manager.SessionManager;
+import org.hibernate.Session;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface GeneralDao<T, ID> {
-    String getAll();
-    String getById();
-    String createElem();
-    String updateElem();
-    String removeElem();
-
-    T recordEntity(ResultSet resultSet) throws SQLException;
-
-    PreparedStatement setParameters(PreparedStatement preparedStatement, T model) throws SQLException;
-
-    PreparedStatement setId(PreparedStatement preparedStatement, T model) throws SQLException;
+    QueryGenerator getQueryGenerator();
 
     default List<T> findAll() throws SQLException {
+
         List<T> entityList = new ArrayList<>();
-        try (Statement statement = ConnectionManager.setConnection().createStatement()) {
-            ResultSet resultSet = statement.executeQuery(getAll());
-            while (resultSet.next()) {
-                entityList.add(recordEntity(resultSet));
+
+        try (Session session = SessionManager.getSession()) {
+            Query query = session.createQuery(getQueryGenerator().generateFindAll());
+            for (Object entity : query.list()) {
+                entityList.add((T) entity);
             }
-            resultSet.close();
             return entityList;
         }
     }
 
     default T findById(ID id) throws SQLException {
-        try (PreparedStatement preparedStatement = ConnectionManager.setConnection().prepareStatement(getById())) {
-            preparedStatement.setObject(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return recordEntity(resultSet);
-                }
-            }
+        try (Session session = SessionManager.getSession()) {
+            Query query = session.createQuery(getQueryGenerator().generateFindOne());
+            query.setParameter("id", id);
+            return (T) query.uniqueResult();
         }
-        return null;
     }
 
     default int create(T entity) throws SQLException {
-        Connection connection = ConnectionManager.setConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(createElem())) {
-            PreparedStatement statement = setParameters(preparedStatement, entity);
-            return statement.executeUpdate();
+        try (Session session = SessionManager.getSession()) {
+            int id = (int) session.save(entity);
+            session.close();
+            return id;
         }
     }
 
-    default int update(T entity) throws SQLException {
-        Connection connection = ConnectionManager.setConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateElem())) {
-            PreparedStatement statement = setParameters(preparedStatement, entity);
-            statement = setId(statement, entity);
-            return statement.executeUpdate();
+    default void update(T entity) throws SQLException {
+        try (Session session = SessionManager.getSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(entity);
+            session.getTransaction().commit();
+            session.close();
         }
     }
 
     default int delete(ID id) throws SQLException {
-        Connection connection = ConnectionManager.setConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(removeElem())) {
-            preparedStatement.setObject(1, id);
-            return preparedStatement.executeUpdate();
+        try (Session session = SessionManager.getSession()) {
+            session.beginTransaction();
+            Query query = session.createQuery(getQueryGenerator().generateDelete());
+            query.setParameter("id", id);
+            Integer res = query.executeUpdate();
+            session.getTransaction().commit();
+            session.close();
+            return res;
         }
     }
 

@@ -14,4 +14,8 @@ public class WorkerController implements com.lab4.controller.interfaces.WorkerCo
     public GeneralDao<Worker, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(workerDao,() -> workerDao = new WorkerDao());
     }
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s |","id","transport_id");
+    }
 }

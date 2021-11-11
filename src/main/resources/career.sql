@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS `position`;
 CREATE TABLE `position` (
                             `id` int NOT NULL AUTO_INCREMENT,
                             `lat` float DEFAULT NULL,
-                            `long` float DEFAULT NULL,
+                            `plong` float DEFAULT NULL,
 
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

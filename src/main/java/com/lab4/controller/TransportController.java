@@ -14,4 +14,9 @@ public class TransportController implements com.lab4.controller.interfaces.Trans
     public GeneralDao<Transport, Integer> generalDoa() {
         return Objects.requireNonNullElseGet(transportDao,() -> transportDao = new TransportDao());
     }
+
+    @Override
+    public String printColumns(){
+        return String.format("|%3s| %-20s | %-20s | %-20s |","id","model", "transportcol", "career_id");
+    }
 }
