@@ -1,0 +1,67 @@
+DROP DATABASE IF EXISTS books;
+CREATE DATABASE IF NOT EXISTS books;
+USE books;
+
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT NOT NULL,
+  login VARCHAR(45) NOT NULL,
+  second_name VARCHAR(45) NOT NULL,
+  first_name VARCHAR(45) NOT NULL,
+  patronymic VARCHAR(45) NOT NULL,
+  birth_date DATE NOT NULL,
+  birth_place VARCHAR(45) NOT NULL,
+  place_of_residence VARCHAR(45) NOT NULL,
+  note VARCHAR(45) NULL DEFAULT NULL,
+  rating INT NULL DEFAULT NULL,
+  password_id INT NOT NULL,
+  PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS passwords;
+
+CREATE TABLE IF NOT EXISTS passwords (
+  id INT NOT NULL AUTO_INCREMENT,
+  password VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS books;
+
+CREATE TABLE IF NOT EXISTS books (
+  id INT NOT NULL,
+  name VARCHAR(45) NOT NULL,
+  author VARCHAR(45) NOT NULL,
+  udc FLOAT NOT NULL,
+  raiting INT NOT NULL,
+  directory_tree_id INT NOT NULL,
+  PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS directory_tree;
+
+CREATE TABLE IF NOT EXISTS directory_tree(
+  id INT NOT NULL AUTO_INCREMENT,
+  rubric VARCHAR(45) NOT NULL,
+  directory_tree_id INT,
+  PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS link;
+
+CREATE TABLE IF NOT EXISTS link(
+  id INT NOT NULL AUTO_INCREMENT,
+  book_email_address VARCHAR(45) NOT NULL,
+  book_id INT NOT NULL,
+  PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS user_book;
+
+CREATE TABLE IF NOT EXISTS user_book (
+  book_id INT NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (book_id, user_id));
+
+DROP TABLE IF EXISTS logUpadateBook;
+  
+CREATE TABLE IF NOT EXISTS logUpadateBook (
+id INT AUTO_INCREMENT, 
+time_change DATE,
+PRIMARY KEY (id));
